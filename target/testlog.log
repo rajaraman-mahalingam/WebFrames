@@ -1,0 +1,23 @@
+INFO main steeleye - ________________________________________________________________________________________________________________________________________________________
+INFO main steeleye - [2017-07-20 14:09:06.717] New test started:
+com.steeleye.iris.automation.tests.LoginFeatureTest.Iris_0001-value = IRIS:0001 Verify Login Functionality - Incorrect username and Password
+INFO main steeleye - Given a user attempts to access the IRIS Login Page
+INFO main steeleye - When i input the username in the email field
+INFO main steeleye - And i input the password in the password field
+INFO main steeleye - And press the submit button
+INFO main steeleye - Verification Passed:Error message should appear..
+INFO main steeleye - Verification Passed:Error message should match as expected
+INFO main steeleye - [2017-07-20 14:09:08.55] Test Ended:
+com.steeleye.iris.automation.tests.LoginFeatureTest.Iris_0001-value = IRIS:0001 Verify Login Functionality - Incorrect username and Password
+INFO main steeleye - Execution Status:PASSED
+INFO main steeleye - ________________________________________________________________________________________________________________________________________________________
+INFO main steeleye - [2017-07-20 14:09:08.551] New test started:
+com.steeleye.iris.automation.tests.LoginFeatureTest.Iris_0002-value = IRIS:0002 Verify Login Fucntionality - Correct username and Password
+INFO main steeleye - Given a user attempts to access the IRIS Login Page
+INFO main steeleye - When i input the username in the email field
+INFO main steeleye - And i input the password in the password field
+INFO main steeleye - And press the submit button
+INFO main steeleye - Verification Passed:Successfull Login - No Error message displayed
+INFO main steeleye - [2017-07-20 14:09:19.577] Test Ended:
+com.steeleye.iris.automation.tests.LoginFeatureTest.Iris_0002-value = IRIS:0002 Verify Login Fucntionality - Correct username and Password
+INFO main steeleye - Execution Status:PASSED
