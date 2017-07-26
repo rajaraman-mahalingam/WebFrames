@@ -1,103 +1,113 @@
 package com.steeleye.iris.automation.core;
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assume;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestName;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.After;
+
+import com.steeleye.iris.automation.utilities.Utils;
 
 /**
  * Created by rajaramanmahalingam on 14/07/2017.
  */
 public abstract class BaseTestCase {
-  
-  public static boolean testStarted, testEnded;
 
-  @Rule
-  public TestName testName = new TestName();
-  
-  @Rule
-  public TestWatcher watchman = new TestWatcher() {
-    
-    @Override
-    public void failed(Throwable e, Description description) { TestLogger.setResult(ExecutionStatus.FAILED, e);}
-   
-    @Override
-    public void succeeded(Description description) {TestLogger.setResult(ExecutionStatus.PASSED);}
-  };
+	public static boolean testStarted, testEnded;
 
-  @BeforeClass
-  public static void classInit() {
-    TestLogger.init();
-    try {
-      Browser.openBrowser();
-    } catch (Exception e) {
-      TestLogger.info("=>Setup Error!", e);
-      TestLogger.quit();
-    }
-    /**
-     * Check if the site is up and Running using http methods and if its a 200
-     * proceed. If not, catch the error, write to Log, fail the test and quit!
-     */
-  }
+	@Rule
+	public TestName testName = new TestName();
 
-  @AfterClass
-  public static void classQuit() {
-    try {
-      Browser.closeBrowser();
-    }catch (Exception e) {
-      TestLogger.fatal("=>Unable to close instance...");
-    }
-    TestLogger.quit();
-   }
+	@Rule
+	public TestWatcher watchman = new TestWatcher() {
 
-  @Before
-  public void testSetup() {
-    /**
-     * Set the testName and then open the browser. If browser open failed, catch
-     * the exception, write to Log, fail the test and quit!
-     */
-    if(Browser.driverOpened) {
-    Config.setTestName(testName.getMethodName());
-    Config.setTestClass(this.getClass().getName());
-    try {
-      TestRunManager.getTestDescription();
-    } catch (ClassNotFoundException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (NoSuchMethodException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    TestLogger.doTestStart();
-    testStarted = true;
-    }   
-  }
-  
+		@Override
+		public void failed(Throwable e, Description description) {
+			TestLogger.setResult(ExecutionStatus.FAILED, e);
+			TestLogger.info("Execution Status:" + ExecutionStatus.FAILED.name(), e);
+			Utils.takeScreenShot();
+		}
 
-  @After
-  public void testTearDown() {
-    /**
-     * Do not close the browser instance, clear browser session for this test.
-     * And continue test!
-     */
-    if(testStarted) {
-    TestLogger.doTestEnd();
-    testEnded = true;
-    Config.setTestName(testName.getMethodName());
-    Config.setTestClass(this.getClass().getName());
-    try {
-      TestRunManager.getTestDescription();
-    } catch (ClassNotFoundException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (NoSuchMethodException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-  }
-  }
-  }
+		@Override
+		public void succeeded(Description description) {
+			TestLogger.setResult(ExecutionStatus.PASSED);
+			TestLogger.info("Execution Status:" + ExecutionStatus.PASSED.name());
+		}
+
+		@Override
+		public void skipped(org.junit.internal.AssumptionViolatedException e, Description description) {
+			TestLogger.setResult(ExecutionStatus.SKIPPED, e);
+		}
+
+		@Override
+		public void starting(Description description) {
+			TestLogger.setResult(ExecutionStatus.STARTING);
+		}
+
+		@Override
+		public void finished(Description description) {
+			TestLogger.setResult(ExecutionStatus.FINISHED);
+		}
+	};
+
+	@BeforeClass
+	public static void classInit() {
+
+		/**
+		 * Check if the site is up and Running using http methods if 200, then =>
+		 * Initialize the Test Logger && Open the B Instance if B Instance fails =>
+		 * Catch Exception, Fail the test and quit! else, then => Fail the test and
+		 * quit!
+		 */
+		TestLogger.init();
+		TestLogger.info("Running " + Config.getRunCondition() + " tests......");
+		try {
+			Browser.openBrowser();
+		} catch (Exception e) {
+			TestLogger.info("=>Setup Error!", e);
+			TestLogger.quit();
+		}
+	}
+
+	@AfterClass
+	public static void classQuit() {
+		/**
+		 * Close the Browser Instance and quit. Catch any Exception in the process.
+		 */
+		try {
+			Browser.closeBrowser();
+		} catch (Exception e) {
+			TestLogger.fatal("=>Unable to close instance...", e);
+		}
+		TestLogger.quit();
+	}
+
+	@Before
+	public void testSetup() throws ClassNotFoundException, NoSuchMethodException {
+
+		/**
+		 * Check if the testRunCondition of this test is matching the global Test
+		 * Run condition set in the automation.properties file. If not matching,
+		 * then Skip the test! If Matching, then proceed with the test.
+		 */
+		Config.setTestName(testName.getMethodName());
+		Config.setTestClass(this.getClass().getName());
+		Config.getTestDescription();
+		Assume.assumeTrue(Config.verifyRunCondition());
+		Assume.assumeTrue(Config.verifyPriority());
+		TestLogger.doTestStart();
+	}
+
+	@After
+	public void testTearDown() {
+		/**
+		 * Do not close the B instance, clear B session for this test. And continue
+		 * test!
+		 */
+		TestLogger.doTestEnd();
+	}
+}
