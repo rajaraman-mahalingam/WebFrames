@@ -8,12 +8,13 @@ import org.junit.*;
 public class LoginFeatureTest extends BaseIrisTestCase {
 
 	@Test
-	@RunConditions("REGRESSION") 
+	@RunConditions("SANITY")
+	@Priorities("LOW")
 	@TestDescription("IRIS:0001 Verify Login Functionality - Incorrect username and Password")
 
 	public void Iris_0001() {
 		TestLogger.info("Given a user attempts to access the IRIS Login Page");
-		LoginPage.open(LoginPage.pageUrl);
+		LoginPage.openPage(LoginPage.pageUrl);
 
 		TestLogger.info("When i input the username in the email field");
 		LoginPage.typeIn(LoginPage.Locators.emailField, "Hello");
@@ -24,7 +25,7 @@ public class LoginFeatureTest extends BaseIrisTestCase {
 		TestLogger.info("And press the submit button");
 		LoginPage.click(LoginPage.Locators.loginButton);
 
-		//LoginPage.waitForDOMToLoad(10);
+		LoginPage.waitForDOMToLoad(10);
 
 		TestLogger.assertTrue("Error message should appear..",
 		    LoginPage.isElementDisplayed(LoginPage.Locators.errorMessage));
@@ -33,12 +34,13 @@ public class LoginFeatureTest extends BaseIrisTestCase {
 	}
 
 	@Test
-	@RunConditions("Regression") @Priorities("HIGH")
+	@RunConditions("Regression")
+	@Priorities("HIGH")
 	@TestDescription("IRIS:0002 Verify Login Functionality - Correct username and Password")
 
 	public void Iris_0002() {
 		TestLogger.info("Given a user attempts to access the IRIS Login Page");
-		LoginPage.open(LoginPage.pageUrl);
+		LoginPage.openPage(LoginPage.pageUrl);
 
 		TestLogger.info("When i input the username in the email field");
 		LoginPage.typeIn(LoginPage.Locators.emailField, Config.getUserName());

@@ -6,6 +6,7 @@ com/steeleye/iris/automation/core/BrowserEnvironment$1.class
 com/steeleye/iris/automation/core/Page.class
 com/steeleye/iris/automation/pages/orders/OrdersReportsPage.class
 com/steeleye/iris/automation/core/TestLogger.class
+com/steeleye/iris/automation/utilities/Utils.class
 com/steeleye/iris/automation/pages/market/MarketsContactsPage.class
 com/steeleye/iris/automation/core/Page$Element$LocatorStrategy.class
 com/steeleye/iris/automation/pages/trades/TradesDashboardPage.class

@@ -9,7 +9,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
  */
 public enum BrowserEnvironment {
 
-	Local("Local"), Remote("Remote");
+	Local("Local"), Grid("Grid"), External("External");
 
 	public String name;
 	public String chromeDriverPath;
@@ -22,16 +22,22 @@ public enum BrowserEnvironment {
 		try {
 			switch (this) {
 			case Local:
-				return getLocalCapabilities();
-			case Remote:
-				return getRemoteCapabilities();
 			default:
-				return null;
+				return getLocalCapabilities();
+			case Grid:
+				return getGridCapabilities();
+			case External:
+				return getExternalCapabilities();
 			}
 		} catch (Exception e) {
 			TestLogger.debug("Unable to get Capabilities", e);
 			return null;
 		}
+	}
+
+	private DesiredCapabilities getExternalCapabilities() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public DesiredCapabilities getLocalHeadLessCapabilities() {
@@ -74,7 +80,7 @@ public enum BrowserEnvironment {
 		return caps;
 	}
 
-	public DesiredCapabilities getRemoteHeadLessCapabilities() {
+	public DesiredCapabilities getGridHeadLessCapabilities() {
 		DesiredCapabilities caps = DesiredCapabilities.chrome();
 		if (Config.getPlatform().toString().equals("Windows")) {
 			chromeDriverPath = "src\\main\\resources\\drivers\\chromedriverWin.exe";
@@ -89,7 +95,7 @@ public enum BrowserEnvironment {
 		return caps;
 	}
 
-	public DesiredCapabilities getRemoteChromeCapabilities() {
+	public DesiredCapabilities getGridChromeCapabilities() {
 		DesiredCapabilities caps = DesiredCapabilities.chrome();
 		if (Config.getPlatform().toString().equals("Windows")) {
 			chromeDriverPath = "src\\main\\resources\\drivers\\chromedriverWin.exe";
@@ -103,7 +109,7 @@ public enum BrowserEnvironment {
 		return caps;
 	}
 
-	public DesiredCapabilities getRemoteIECapabilities() {
+	public DesiredCapabilities getGridIECapabilities() {
 		DesiredCapabilities caps = DesiredCapabilities.internetExplorer();
 		System.setProperty("webdriver.ie.driver", "src\\main\\resources\\drivers\\IEDriverServer.exe");
 		caps.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
@@ -136,19 +142,19 @@ public enum BrowserEnvironment {
 		}
 	}
 
-	public DesiredCapabilities getRemoteCapabilities() {
+	public DesiredCapabilities getGridCapabilities() {
 		DesiredCapabilities caps = null;
 		try {
 			switch (Config.getBrowserType()) {
 			case IE11:
-				caps = getRemoteIECapabilities();
+				caps = getGridIECapabilities();
 				break;
 			case Chrome:
 			default:
-				caps = getRemoteChromeCapabilities();
+				caps = getGridChromeCapabilities();
 				break;
 			case HeadLess:
-				caps = getRemoteHeadLessCapabilities();
+				caps = getGridHeadLessCapabilities();
 				break;
 			}
 			return caps;

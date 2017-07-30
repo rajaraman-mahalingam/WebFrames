@@ -18,7 +18,7 @@ public class Config {
 	static boolean debug;
 	static String runCondition;
 	static String priority;
-	
+
 	@Getter
 	@Setter
 	private static String testName;
@@ -31,7 +31,7 @@ public class Config {
 	public static void readAutomationProperty() {
 		Utils.readAutomationPropertiesFromFile();
 	}
-	
+
 	public static String getBaseURL() {
 		return baseURL = Utils.getProperty("baseURL");
 	}
@@ -59,7 +59,7 @@ public class Config {
 	public static String getPassword() {
 		return passWord = Utils.getProperty("password");
 	}
-	
+
 	public static boolean isDebug() {
 		readAutomationProperty();
 		return debug = Boolean.parseBoolean(Utils.getProperty("isDebug"));
@@ -72,7 +72,7 @@ public class Config {
 	public static String getPriority() {
 		return priority = Utils.getProperty("priority");
 	}
-	
+
 	public static String getTestDescription() throws ClassNotFoundException, NoSuchMethodException {
 		String description = null;
 		description = TestRunManager.getTestDescription();
@@ -98,28 +98,28 @@ public class Config {
 	public static String getTestPriority() throws ClassNotFoundException, NoSuchMethodException {
 		String description = null;
 		description = TestRunManager.getTestPriority();
-		if ( (description == null) || (description.equals("")) ) {
+		if ((description == null) || (description.equals(""))) {
 			description = "Priority Not set. Will execute on all Test Runs!";
 		}
 		return description;
 	}
-	
+
 	public static boolean verifyRunCondition() throws ClassNotFoundException, NoSuchMethodException {
 		if ((getRunCondition().equalsIgnoreCase("All")) || (getRunCondition().equalsIgnoreCase(""))) {
 			return true;
 		}
 		return getRunCondition().equalsIgnoreCase(getTestRunCondition());
 	}
-	
+
 	public static boolean verifyPriority() throws ClassNotFoundException, NoSuchMethodException {
-		if ( (getRunCondition().equalsIgnoreCase("All") ) || (getRunCondition().equalsIgnoreCase("Sanity")) 
-		|| ( (getRunCondition().equalsIgnoreCase("Regression"))  && (getPriority().equalsIgnoreCase("")) )
-			 )	{
-						return true;
+		if ((getRunCondition().equalsIgnoreCase("All")) || (getRunCondition().equalsIgnoreCase("Sanity"))
+		    || ((getRunCondition().equalsIgnoreCase("Regression")) && (getPriority().equalsIgnoreCase("")))
+		    || (getRunCondition().equalsIgnoreCase("") && (getPriority().equalsIgnoreCase("")))) {
+			return true;
+		} else if ((getRunCondition().equalsIgnoreCase("Regression")) && (!getPriority().equalsIgnoreCase(""))
+		    || (getRunCondition().equalsIgnoreCase("")) && (!getPriority().equalsIgnoreCase(""))) {
+			return getPriority().equalsIgnoreCase(getTestPriority());
 		}
-		if ( (getRunCondition().equalsIgnoreCase("Regression") ) && (!getPriority().equalsIgnoreCase("")) ) {
-					return getPriority().equalsIgnoreCase(getTestPriority());
-	}
 		return false;
- }
+	}
 }

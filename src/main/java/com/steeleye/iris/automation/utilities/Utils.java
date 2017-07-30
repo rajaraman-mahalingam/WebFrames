@@ -46,8 +46,11 @@ public class Utils {
 		return prop.getProperty(property).trim();
 	}
 
-	public static void readPropertiesFromTool() {
-
+	public static long convertStringToNumber(String element) {
+		return Long.parseLong(element);
 	}
 
+	public static String getSubString(String element, int start, int end) {
+		return element.substring(start, end);
+	}
 }
