@@ -1,6 +1,5 @@
 package com.steeleye.iris.automation.pages.market;
 
-
 import com.steeleye.iris.automation.components.PageActions;
 import com.steeleye.iris.automation.core.Config;
 import com.steeleye.iris.automation.core.Page;
@@ -14,8 +13,9 @@ public class MarketCounterpartyPage extends Page implements PageActions {
 	public static String pageTitle;
 	public static String countOfCounterParties ="xpath=//*[@id='app']/div/div/main/div/div/div/div[2]/div";
 	public static String listOfCounterparties ="xpath=//*[@id='app']/div/div/main/div/section/div/div/div/table/tbody/tr";
+	public static String allCounterPartiesCheckbox="xpath=//*[@id='app']/div/div/main/div/section/div/div/div/table/thead/tr/th[1]/div/label/input";
 	}
-	
+
 	public static long getNumberFromCounterPartiesString() {
 		return Utils.convertStringToNumber(getCounterpartyText());
 	}
@@ -25,6 +25,14 @@ public class MarketCounterpartyPage extends Page implements PageActions {
 		return split[0];
 	}
 	
+	public static int selectCounterparties() {
+		for(int i=0; i<5;i++){
+			getCheckboxOfChild(Locators.listOfCounterparties).get(i).click();
+		}
+		return getCountOfSelectedChildren(Locators.listOfCounterparties);
+	}
+	
+
 	public void addNew() {
 		// TODO Auto-generated method stub
 		

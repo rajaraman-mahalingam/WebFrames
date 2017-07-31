@@ -15,7 +15,7 @@ import org.junit.rules.Timeout;
  */
 public class TestLogger {
 
-	private static Logger logger = Logger.getLogger("steeleye");
+	private static final Logger logger = Logger.getLogger("steeleye");
 	public static ExecutionStatus executionStatus;
 
 	public static TestName testName = new TestName();

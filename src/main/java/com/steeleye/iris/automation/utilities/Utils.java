@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.Random;
+import java.util.stream.IntStream;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
@@ -52,5 +54,10 @@ public class Utils {
 
 	public static String getSubString(String element, int start, int end) {
 		return element.substring(start, end);
+	}
+
+	public static IntStream randomize(int start, int end) {
+		Random rand = new Random();
+		return rand.ints(start, end);
 	}
 }

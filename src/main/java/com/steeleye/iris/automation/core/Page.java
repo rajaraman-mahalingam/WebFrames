@@ -5,9 +5,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-
 import com.steeleye.iris.automation.pages.LoginPage.Locators;
-
 import org.openqa.selenium.By.ByClassName;
 import org.openqa.selenium.By.ByCssSelector;
 import org.openqa.selenium.By.ById;
@@ -143,11 +141,13 @@ public class Page extends Browser {
 	}
 
 	public static void open(String url) {
-		if (!Config.getTestClass().matches("^Login$")) {
+		if  (!Config.getTestClass().matches("^Login$")) {
 			openPage(url);
+			if(isElementDisplayed(Locators.emailField)) {
 			typeIn(Locators.emailField, Config.getUserName());
 			typeIn(Locators.passWordField, Config.getPassword());
 			click(Locators.loginButton);
+			}
 		}
 	}
 
@@ -177,6 +177,23 @@ public class Page extends Browser {
 			}
 		}
 		return element;
+	}
 
+	public static List<WebElement> getCheckboxOfChild(String Locator) {
+		List<WebElement> element = new ArrayList<WebElement>();
+		for (int i = 0; i < getCountOfChildren(Locator); i++) {
+			element.add(i, findElement(Locator + "[" + (i + 1) + "]" + "/td[1]/div/label/span"));
+		}
+		return element;
+	}
+
+	public static int getCountOfSelectedChildren(String Locator) {
+		List<WebElement> element = new ArrayList<WebElement>();
+		for (int i = 0; i < getCheckboxOfChild(Locator).size(); i++) {
+			if (isElementSelected(Locator + "[" + (i + 1) + "]" + "/td[1]/div/label/input")) {
+				element.add(findElement(Locator + "[" + (i + 1) + "]" + "/td[1]/div/label/span"));
+			}
+		}
+		return element.size();
 	}
 }

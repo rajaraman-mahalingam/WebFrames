@@ -25,7 +25,7 @@ public class LoginFeatureTest extends BaseIrisTestCase {
 		TestLogger.info("And press the submit button");
 		LoginPage.click(LoginPage.Locators.loginButton);
 
-		LoginPage.waitForDOMToLoad(10);
+		LoginPage.waitForDOMToLoad(5);
 
 		TestLogger.assertTrue("Error message should appear..",
 		    LoginPage.isElementDisplayed(LoginPage.Locators.errorMessage));
