@@ -33,7 +33,7 @@ public class Browser {
 				returnedDriver = getBrowserType().createDriver();
 				returnedDriver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
 				break;
-			case Remote:
+			case Grid:
 				// returnedDriver = (RemoteWebDriver)
 				// BrowserEnvironment.Remote.getRemoteCapabilities(getBrowserType());
 				break;
@@ -56,7 +56,7 @@ public class Browser {
 	public static WebDriver driver() {
 		return driver;
 	}
-	
+
 	public static BrowserEnvironment getEnvironment() {
 		return Config.getEnvironment();
 	}
@@ -74,8 +74,8 @@ public class Browser {
 		}
 	}
 
-	public static void open(String url) {
-		driver.get(url);
+	public static void navigate(String url) {
+		driver.navigate().to(url);
 	}
 
 	public static void close() {
@@ -141,5 +141,4 @@ public class Browser {
 	public Set<String> getPageAllWindowHandle() {
 		return driver.getWindowHandles();
 	}
-
 }

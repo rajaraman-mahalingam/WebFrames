@@ -9,7 +9,6 @@ import org.junit.Rule;
 import org.junit.rules.TestName;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
-
 import com.steeleye.iris.automation.utilities.Utils;
 
 /**
@@ -41,6 +40,7 @@ public abstract class BaseTestCase {
 		@Override
 		public void skipped(org.junit.internal.AssumptionViolatedException e, Description description) {
 			TestLogger.setResult(ExecutionStatus.SKIPPED, e);
+			TestLogger.info("Execution Status:" + ExecutionStatus.SKIPPED.name());
 		}
 
 		@Override
@@ -64,7 +64,7 @@ public abstract class BaseTestCase {
 		 * quit!
 		 */
 		TestLogger.init();
-		TestLogger.info("Running " + Config.getRunCondition() + " tests......");
+		TestLogger.info("Running " + Config.getRunCondition() + " tests on " + Config.getEnvironment());
 		try {
 			Browser.openBrowser();
 		} catch (Exception e) {
@@ -97,8 +97,8 @@ public abstract class BaseTestCase {
 		Config.setTestName(testName.getMethodName());
 		Config.setTestClass(this.getClass().getName());
 		Config.getTestDescription();
-		Assume.assumeTrue(Config.verifyRunCondition());
-		Assume.assumeTrue(Config.verifyPriority());
+		Assume.assumeTrue("runcondition", Config.verifyRunCondition());
+		Assume.assumeTrue("priority", Config.verifyPriority());
 		TestLogger.doTestStart();
 	}
 
