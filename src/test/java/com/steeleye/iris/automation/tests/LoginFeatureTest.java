@@ -10,7 +10,7 @@ public class LoginFeatureTest extends BaseIrisTestCase {
 	@Test
 	@RunConditions("SANITY")
 	@Priorities("LOW")
-	@TestDescription("IRIS:0001 Verify Login Functionality - Incorrect username and Password")
+	@TestDescription("IRIS:0001/Login Functionality/ Verify Login Functionality - Incorrect username and Password")
 
 	public void Iris_0001() {
 		TestLogger.info("Given a user attempts to access the IRIS Login Page");
@@ -36,7 +36,7 @@ public class LoginFeatureTest extends BaseIrisTestCase {
 	@Test
 	@RunConditions("Regression")
 	@Priorities("HIGH")
-	@TestDescription("IRIS:0002 Verify Login Functionality - Correct username and Password")
+	@TestDescription("IRIS:0002/Login Functionality/ Verify Login Functionality - Correct username and Password")
 
 	public void Iris_0002() {
 		TestLogger.info("Given a user attempts to access the IRIS Login Page");

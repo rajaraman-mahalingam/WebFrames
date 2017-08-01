@@ -6,6 +6,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import com.steeleye.iris.automation.pages.LoginPage.Locators;
+import com.steeleye.iris.automation.utilities.Utils;
+
 import org.openqa.selenium.By.ByClassName;
 import org.openqa.selenium.By.ByCssSelector;
 import org.openqa.selenium.By.ById;
@@ -19,6 +21,8 @@ import org.openqa.selenium.By.ByXPath;
  * Created by rajaramanmahalingam on 14/07/2017.
  */
 public class Page extends Browser {
+
+	public static String pagination = "xpath=//*[@id='app']/div/div/main/div/section/div/div/div[2]/div/button";
 
 	public static class Element {
 
@@ -120,13 +124,16 @@ public class Page extends Browser {
 	}
 
 	public static boolean isElementSelected(String Locator) {
-
 		return findElement(Locator).isSelected();
 	}
 
 	public static boolean isElementEnabled(String Locator) {
-
-		return findElement(Locator).isEnabled();
+		try {
+			findElement(Locator).isEnabled();
+			return true;
+		} catch (NoSuchElementException e) {
+			return false;
+		}
 	}
 
 	public static void typeIn(String Locator, String keys) {
@@ -136,17 +143,16 @@ public class Page extends Browser {
 	}
 
 	public static String getText(String Locator) {
-
 		return findElement(Locator).getText();
 	}
 
 	public static void open(String url) {
-		if  (!Config.getTestClass().matches("^Login$")) {
+		if (!Config.getTestClass().matches("^Login$")) {
 			openPage(url);
-			if(isElementDisplayed(Locators.emailField)) {
-			typeIn(Locators.emailField, Config.getUserName());
-			typeIn(Locators.passWordField, Config.getPassword());
-			click(Locators.loginButton);
+			if (isElementDisplayed(Locators.emailField)) {
+				typeIn(Locators.emailField, Config.getUserName());
+				typeIn(Locators.passWordField, Config.getPassword());
+				click(Locators.loginButton);
 			}
 		}
 	}
@@ -155,45 +161,58 @@ public class Page extends Browser {
 		return findElements(Locator).size() > 0;
 	}
 
-	public static int getCountOfChildren(String Locator) {
+	public static int getCountOfChildrenDisplayedOnThisPage(String Locator) {
 		return findElements(Locator).size();
+	}
+
+	public static boolean doesPaginationExist() {
+		return isElementDisplayed(pagination);
+	}
+
+	public static int getCountOfPages() {
+		return findElements(pagination).size();
+	}
+
+	public static List<WebElement> getPages() {
+		List<WebElement> element = new ArrayList<WebElement>();
+		for (int i = 0; i < getCountOfPages(); i++) {
+			if (!findElement(pagination + "[" + (i + 1) + "]").getText().equals("")) {
+				element.add(findElement(pagination + "[" + (i + 1) + "]"));
+			}
+		}
+		return element;
 	}
 
 	public static List<WebElement> getChildren(String Locator) {
 		List<WebElement> element = new ArrayList<WebElement>();
 		if (hasChildren(Locator)) {
-			for (int i = 0; i < getCountOfChildren(Locator); i++) {
-				element.add(i, findElement(Locator + "[" + (i + 1) + "]"));
+			if (!doesPaginationExist()) {
+				for (int i = 0; i < getCountOfChildrenDisplayedOnThisPage(Locator); i++) {
+					element.add(i, findElement(Locator + "[" + (i + 1) + "]"));
+				}
+			} else {
+				for (int j = 0; j < getPages().size(); j++) {
+					getPages().get(j).click();
+					for (int i = 0; i < getCountOfChildrenDisplayedOnThisPage(Locator); i++) {
+						element.add(i, findElement(Locator + "[" + (i + 1) + "]"));
+					}
+				}
 			}
 		}
 		return element;
 	}
-
-	public static List<String> getChildName(String Locator) {
-		List<String> element = new ArrayList<String>();
-		if (hasChildren(Locator)) {
-			for (int i = 0; i < getCountOfChildren(Locator); i++) {
-				element.add(i, findElement(Locator + "[" + (i + 1) + "]").getText());
-			}
-		}
-		return element;
+	
+	public static int getCountOfChildren(String Locator) {
+		return getChildren(Locator).size();
 	}
 
-	public static List<WebElement> getCheckboxOfChild(String Locator) {
-		List<WebElement> element = new ArrayList<WebElement>();
-		for (int i = 0; i < getCountOfChildren(Locator); i++) {
-			element.add(i, findElement(Locator + "[" + (i + 1) + "]" + "/td[1]/div/label/span"));
-		}
-		return element;
+	public static long countOfItems(String Locators) {
+		return Utils.convertStringToNumber(convertStringToNum(Locators));
 	}
 
-	public static int getCountOfSelectedChildren(String Locator) {
-		List<WebElement> element = new ArrayList<WebElement>();
-		for (int i = 0; i < getCheckboxOfChild(Locator).size(); i++) {
-			if (isElementSelected(Locator + "[" + (i + 1) + "]" + "/td[1]/div/label/input")) {
-				element.add(findElement(Locator + "[" + (i + 1) + "]" + "/td[1]/div/label/span"));
-			}
-		}
-		return element.size();
+	public static String convertStringToNum(String Locators) {
+		String[] split = findElement(Locators).getText().split("\\s+");
+		return split[0];
 	}
+
 }
