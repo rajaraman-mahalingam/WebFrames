@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
@@ -58,5 +59,10 @@ public class Utils {
 	public static int randomize(int number) {
 		Random rand = new Random();
 		return rand.nextInt(number);
+	}
+
+	public static IntStream randomize(int start, int end) {
+		Random rand = new Random();
+		return rand.ints(start, end);
 	}
 }

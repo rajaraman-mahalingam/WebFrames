@@ -5,6 +5,8 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+
+import com.steeleye.iris.automation.pages.LoginPage;
 import com.steeleye.iris.automation.pages.LoginPage.Locators;
 import com.steeleye.iris.automation.utilities.Utils;
 
@@ -149,7 +151,7 @@ public class Page extends Browser {
 	public static void open(String url) {
 		if (!Config.getTestClass().matches("^Login$")) {
 			openPage(url);
-			if (isElementDisplayed(Locators.emailField)) {
+			if (isElementDisplayed(LoginPage.Locators.emailField)) {
 				typeIn(Locators.emailField, Config.getUserName());
 				typeIn(Locators.passWordField, Config.getPassword());
 				click(Locators.loginButton);
@@ -201,7 +203,7 @@ public class Page extends Browser {
 		}
 		return element;
 	}
-	
+
 	public static int getCountOfChildren(String Locator) {
 		return getChildren(Locator).size();
 	}
