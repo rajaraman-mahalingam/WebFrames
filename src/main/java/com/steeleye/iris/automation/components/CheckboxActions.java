@@ -11,36 +11,40 @@ import com.steeleye.iris.automation.core.TestLogger;
 import com.steeleye.iris.automation.utilities.Utils;
 
 public class CheckboxActions extends Page{
-	
-	public static void checkItems(String Locators) {
-		int count = Utils.randomize(getCheckboxOfChild(Locators).size());
-		TestLogger.info("value:"+count);
-		for(int i=0; i<count;i++){
-			getCheckboxOfChild(Locators).get(i).click();
-		}
-	}
-	
+
 	public static void checkAllItems(String Locators) {
 		Actions action = new Actions(driver);
 		action.moveToElement(findElement(Locators)).click().perform();
 	}
 	
-	public static List<WebElement> getCheckboxOfChild(String Locator) {
+	public static void checkItems(String Parent, String Child) {
+		int count = Utils.randomize(getCheckboxOfChild(Parent, Child).size());
+		if(count==0) {
+			count ++;
+		}
+		TestLogger.info("Selecting "+ count + "items....");
+		for(int i=0; i<count;i++){
+			getCheckboxOfChild(Parent, Child).get(i).click();
+		}
+	}
+	
+	public static List<WebElement> getCheckboxOfChild(String Parent, String Child) {
 		List<WebElement> element = new ArrayList<WebElement>();
-		for (int i = 0; i < getCountOfChildrenDisplayedOnThisPage(Locator); i++) {
-			element.add(findElement(Locator + "[" + (i + 1) + "]" + "/td[1]/div/label/span"));
+		for (int i = 0; i < getCountOfChildrenDisplayedOnThisPage(Parent); i++) {
+			element.add(findElement(Parent + "[" + (i + 1) + "]" + Child));
 		}
 		return element;
 	}
 
-	public static int getCountOfSelectedChildren(String Locator) {
+	
+	public static int getCountOfSelectedChildren(String Parent, String ChildElement, String Child) {
 		List<WebElement> element = new ArrayList<WebElement>();
-		for (int i = 0; i < getCheckboxOfChild(Locator).size(); i++) {
-			if (isElementSelected(Locator + "[" + (i + 1) + "]" + "/td[1]/div/label/input")) {
-				element.add(findElement(Locator + "[" + (i + 1) + "]" + "/td[1]/div/label/span"));
+		for (int i = 0; i < getCheckboxOfChild(Parent, Child).size(); i++) {
+			if (isElementSelected(Parent + "[" + (i + 1) + "]" + ChildElement)) {
+				element.add(findElement(Parent + "[" + (i + 1) + "]" + Child));
 			}
 		}
 		return element.size();
 	}
-
+	
 }

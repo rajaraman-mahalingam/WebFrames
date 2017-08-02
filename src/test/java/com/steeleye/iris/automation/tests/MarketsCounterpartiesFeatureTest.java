@@ -2,73 +2,58 @@ package com.steeleye.iris.automation.tests;
 
 import org.junit.Test;
 
-import com.steeleye.iris.automation.components.CheckboxActions;
+
 import com.steeleye.iris.automation.core.BaseIrisTestCase;
+import com.steeleye.iris.automation.core.Priorities;
+import com.steeleye.iris.automation.core.RunConditions;
 import com.steeleye.iris.automation.core.TestDescription;
 import com.steeleye.iris.automation.core.TestLogger;
 import com.steeleye.iris.automation.pages.market.MarketCounterpartyPage;
-import com.steeleye.iris.automation.pages.market.MarketCounterpartyPage.Locators;
 
 public class MarketsCounterpartiesFeatureTest extends BaseIrisTestCase {
-
+	
 	@Test
+	@RunConditions("Regression") @Priorities("low")
 	@TestDescription("IRIS:0003/MarketCounterParties/ Verify if the Counterparties listed matches the count displayed in the top section")
 	public void Iris_0003() {
 		TestLogger.info("Given the user is in the Markets Counterparties Page");
-		MarketCounterpartyPage.open(MarketCounterpartyPage.pageUrl);
-		MarketCounterpartyPage.waitForDOMToLoad(5);
+		MarketCounterpartyPage.open();
 		
 		TestLogger.assertTrue("Then the Count of counterparties should be displayed in the top section",
-		    MarketCounterpartyPage.isElementDisplayed(MarketCounterpartyPage.Locators.countOfCounterParties));
-		TestLogger.debug("count displayed:"
-		    + MarketCounterpartyPage.countOfItems(MarketCounterpartyPage.Locators.countOfCounterParties));
-		TestLogger.debug("List of items:" + MarketCounterpartyPage.getCountOfChildren(Locators.listOfCounterparties));
-		TestLogger.info(MarketCounterpartyPage.doesPaginationExist());
-		
+		    MarketCounterpartyPage.isCountOfCounterPartiesDisplayed());
+
 		TestLogger.assertTrue("And the count displayed should match the list of counterparties",
-		    MarketCounterpartyPage
-		        .countOfItems(MarketCounterpartyPage.Locators.countOfCounterParties) == MarketCounterpartyPage
-		            .getCountOfChildren(Locators.listOfCounterparties));
+		    MarketCounterpartyPage.countDisplayedEqualsListedCounterparties());
 	}
 
 	@Test
+	@RunConditions("Regression") @Priorities("low")
 	@TestDescription("IRIS:0011/MarketCounterParties/ Verify if the counterparties selected by checkbox matches the count displayed in the top section")
 	public void Iris_0011() {
 		TestLogger.info("Given the user is in the Markets Counterparties Page");
-		MarketCounterpartyPage.open(MarketCounterpartyPage.pageUrl);
-		MarketCounterpartyPage.waitForDOMToLoad(5);
+		MarketCounterpartyPage.open();
 		
-		TestLogger.info("When user randomly selects a few counterparties");
-		CheckboxActions.checkItems(MarketCounterpartyPage.Locators.listOfCounterparties);
-		TestLogger.info("count displayed:"
-		    + MarketCounterpartyPage.countOfItems(MarketCounterpartyPage.Locators.countOfCounterParties));
-		TestLogger
-		    .info("List of items:" + CheckboxActions.getCountOfSelectedChildren(Locators.listOfCounterparties));
-		
+		TestLogger.debug("When user randomly selects a few counterparties");
+		MarketCounterpartyPage.selectCounterParties();
+
 		TestLogger.assertTrue("Then the count displayed should match the list of selected counterparties",
-		    MarketCounterpartyPage
-		        .countOfItems(MarketCounterpartyPage.Locators.countOfCounterParties) == CheckboxActions
-		            .getCountOfSelectedChildren(Locators.listOfCounterparties));
+		    MarketCounterpartyPage.countDisplayedEqualsSelectedCounterparties());
 	}
 
 	@Test
-	@TestDescription("IRIS:0012/MarketCounterParties/ Verify if selecting the all checkbox selects all of the counterparties"
+	@RunConditions("Regression") @Priorities("low")
+	@TestDescription("IRIS:0012/MarketCounterParties/ Verify if selecting the all checkbox selects all of the counterparties in that page"
 	    + " and count displayed in the top section equals the total counterparties")
 	public void Iris_0012() {
 		TestLogger.info("Given the user is in the Markets Counterparties Page");
-		MarketCounterpartyPage.open(MarketCounterpartyPage.pageUrl);
-		MarketCounterpartyPage.waitForDOMToLoad(5);
-		
+		MarketCounterpartyPage.open();
+
 		TestLogger.info("When user selects all counterparties");
-		CheckboxActions.checkAllItems(MarketCounterpartyPage.Locators.allCounterPartiesCheckbox);
-		
-		TestLogger.assertTrue("Then the count displayed should match the list of all counterparties",
-		    MarketCounterpartyPage
-		        .countOfItems(MarketCounterpartyPage.Locators.countOfCounterParties) == CheckboxActions
-		            .getCountOfSelectedChildren(Locators.listOfCounterparties)
-		        && CheckboxActions
-		            .getCountOfSelectedChildren(Locators.listOfCounterparties) == MarketCounterpartyPage
-		                .getCountOfChildrenDisplayedOnThisPage(Locators.listOfCounterparties));
+		MarketCounterpartyPage.selectAllCounterParties();
+
+		TestLogger.assertTrue("Then the count displayed should match the list of all counterparties selected on that page",
+		    MarketCounterpartyPage.countDisplayedEqualsSelectedCounterparties()
+		        && MarketCounterpartyPage.countDisplayedEqualsCounterPartiesListedInThisPage());
 	}
 
 	@TestDescription("IRIS:0004 Verify if a counterparty could be added successfully - Ideal flow journey")

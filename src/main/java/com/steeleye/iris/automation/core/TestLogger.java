@@ -3,7 +3,6 @@ package com.steeleye.iris.automation.core;
 import java.sql.Timestamp;
 
 import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import org.junit.*;
@@ -30,7 +29,7 @@ public class TestLogger {
 	}
 
 	public static void quit() {
-		LogManager.shutdown();
+		//LogManager.shutdown();
 	}
 
 	public static void debug(String message) {
