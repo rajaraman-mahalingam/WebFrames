@@ -1,5 +1,6 @@
 package com.steeleye.iris.automation.tests;
 
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.junit.Test;
 import com.steeleye.iris.automation.core.BaseIrisTestCase;
 import com.steeleye.iris.automation.core.Priorities;
@@ -13,7 +14,7 @@ public class MarketsPeopleFeatureTest extends BaseIrisTestCase {
 	@Test
 	@RunConditions("All") @Priorities("low")
 	@TestDescription("IRIS:0013/MarketPeople/ Verify if the People listed matches the count displayed in the top section")
-	public void Iris_0013() {
+	public void Iris_0013() throws ConfigurationException {
 		TestLogger.info("Given the user is in the Markets People Page");
 		MarketsPeoplePage.open();
 				
@@ -27,7 +28,7 @@ public class MarketsPeopleFeatureTest extends BaseIrisTestCase {
 	@Test
 	@RunConditions("All") @Priorities("low")
 	@TestDescription("IRIS:0014/MarketPeople/ Verify if the People selected by checkbox matches the count displayed in the top section")
-	public void Iris_0014() {
+	public void Iris_0014() throws ConfigurationException {
 		TestLogger.info("Given the user is in the Markets People Page");
 		MarketsPeoplePage.open();
 		
@@ -42,7 +43,7 @@ public class MarketsPeopleFeatureTest extends BaseIrisTestCase {
 	@RunConditions("All") @Priorities("low")
 	@TestDescription("IRIS:0015/MarketPeople/ Verify if selecting the all checkbox selects all of the People in that page"
 	    + " and count displayed in the top section equals the total people displayed in that page")
-	public void Iris_0015() {
+	public void Iris_0015() throws ConfigurationException {
 		TestLogger.info("Given the user is in the Markets People Page");
 		MarketsPeoplePage.open();
 				

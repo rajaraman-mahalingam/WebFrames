@@ -2,6 +2,8 @@ package com.steeleye.iris.automation.core;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -148,7 +150,7 @@ public class Page extends Browser {
 		return findElement(Locator).getText();
 	}
 
-	public static void open(String url) {
+	public static void open(String url) throws ConfigurationException {
 		if (!Config.getTestClass().matches("^Login$")) {
 			openPage(url);
 			if (isElementDisplayed(LoginPage.Locators.emailField)) {

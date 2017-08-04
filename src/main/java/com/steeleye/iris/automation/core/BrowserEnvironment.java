@@ -1,5 +1,6 @@
 package com.steeleye.iris.automation.core;
 
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -40,7 +41,7 @@ public enum BrowserEnvironment {
 		return null;
 	}
 
-	public DesiredCapabilities getLocalHeadLessCapabilities() {
+	public DesiredCapabilities getLocalHeadLessCapabilities() throws ConfigurationException {
 		DesiredCapabilities caps = DesiredCapabilities.chrome();
 		if (Config.getPlatform().toString().equals("Windows")) {
 			chromeDriverPath = "src\\main\\resources\\drivers\\chromedriverWin.exe";
@@ -55,7 +56,7 @@ public enum BrowserEnvironment {
 		return caps;
 	}
 
-	public DesiredCapabilities getLocalChromeCapabilities() {
+	public DesiredCapabilities getLocalChromeCapabilities() throws ConfigurationException {
 		DesiredCapabilities caps = DesiredCapabilities.chrome();
 		if (Config.getPlatform().equals("Windows")) {
 			chromeDriverPath = "src\\main\\resources\\drivers\\chromedriverWin.exe";
@@ -80,7 +81,7 @@ public enum BrowserEnvironment {
 		return caps;
 	}
 
-	public DesiredCapabilities getGridHeadLessCapabilities() {
+	public DesiredCapabilities getGridHeadLessCapabilities() throws ConfigurationException {
 		DesiredCapabilities caps = DesiredCapabilities.chrome();
 		if (Config.getPlatform().toString().equals("Windows")) {
 			chromeDriverPath = "src\\main\\resources\\drivers\\chromedriverWin.exe";
@@ -95,7 +96,7 @@ public enum BrowserEnvironment {
 		return caps;
 	}
 
-	public DesiredCapabilities getGridChromeCapabilities() {
+	public DesiredCapabilities getGridChromeCapabilities() throws ConfigurationException {
 		DesiredCapabilities caps = DesiredCapabilities.chrome();
 		if (Config.getPlatform().toString().equals("Windows")) {
 			chromeDriverPath = "src\\main\\resources\\drivers\\chromedriverWin.exe";

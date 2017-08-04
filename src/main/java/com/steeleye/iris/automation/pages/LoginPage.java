@@ -1,10 +1,12 @@
 package com.steeleye.iris.automation.pages;
 
+import org.apache.commons.configuration2.ex.ConfigurationException;
+
 import com.steeleye.iris.automation.core.*;
 
 public class LoginPage extends Page {
 
-	private static String pageUrl = Config.getBaseURL() + "login";
+	private static String pageUrl =  "login";
 
 	  public static class Locators {
 		public static String root = "xpath=//*[@id='app']/div/div/div/div/div/div/div/form";
@@ -16,8 +18,8 @@ public class LoginPage extends Page {
 
 	}
 	
-	public static void open() {
-		openPage(pageUrl);
+	public static void open() throws ConfigurationException {
+		openPage(Config.getBaseURL()+pageUrl);
 		waitForDOMToLoad(5);
 	}
 	
@@ -26,7 +28,7 @@ public class LoginPage extends Page {
 		typeIn(Locators.passWordField,"dfjkdfjkd");
 	}
 	
-	public static void typeInValidCredentials() {
+	public static void typeInValidCredentials() throws ConfigurationException {
 		typeIn(Locators.emailField, Config.getUserName());
 		typeIn(Locators.passWordField,Config.getPassword());
 	}

@@ -1,5 +1,6 @@
 package com.steeleye.iris.automation.tests;
 
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.junit.Test;
 
 
@@ -15,7 +16,7 @@ public class MarketsCounterpartiesFeatureTest extends BaseIrisTestCase {
 	@Test
 	@RunConditions("Regression") @Priorities("low")
 	@TestDescription("IRIS:0003/MarketCounterParties/ Verify if the Counterparties listed matches the count displayed in the top section")
-	public void Iris_0003() {
+	public void Iris_0003() throws ConfigurationException {
 		TestLogger.info("Given the user is in the Markets Counterparties Page");
 		MarketCounterpartyPage.open();
 		
@@ -29,7 +30,7 @@ public class MarketsCounterpartiesFeatureTest extends BaseIrisTestCase {
 	@Test
 	@RunConditions("Regression") @Priorities("low")
 	@TestDescription("IRIS:0011/MarketCounterParties/ Verify if the counterparties selected by checkbox matches the count displayed in the top section")
-	public void Iris_0011() {
+	public void Iris_0011() throws ConfigurationException {
 		TestLogger.info("Given the user is in the Markets Counterparties Page");
 		MarketCounterpartyPage.open();
 		
@@ -44,7 +45,7 @@ public class MarketsCounterpartiesFeatureTest extends BaseIrisTestCase {
 	@RunConditions("Regression") @Priorities("low")
 	@TestDescription("IRIS:0012/MarketCounterParties/ Verify if selecting the all checkbox selects all of the counterparties in that page"
 	    + " and count displayed in the top section equals the total counterparties")
-	public void Iris_0012() {
+	public void Iris_0012() throws ConfigurationException {
 		TestLogger.info("Given the user is in the Markets Counterparties Page");
 		MarketCounterpartyPage.open();
 

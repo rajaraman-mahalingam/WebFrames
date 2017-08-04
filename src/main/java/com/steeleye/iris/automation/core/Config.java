@@ -1,13 +1,13 @@
 package com.steeleye.iris.automation.core;
 
-import org.junit.Before;
-
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import com.steeleye.iris.automation.utilities.Utils;
 
 import lombok.Getter;
 import lombok.Setter;
 
 public class Config {
+	
 	static BrowserEnvironment environment;
 	static BrowserType browserType;
 	static String baseURL;
@@ -18,7 +18,7 @@ public class Config {
 	static boolean debug;
 	static String runCondition;
 	static String priority;
-
+	
 	@Getter
 	@Setter
 	private static String testName;
@@ -27,50 +27,64 @@ public class Config {
 	@Setter
 	private static String testClass;
 
-	@Before
-	public static void readAutomationProperty() {
-		Utils.readAutomationPropertiesFromFile();
+	public static String readAutomationProperty(String key) throws ConfigurationException {
+		String value = System.getenv(key);
+		if(value != null)
+		{
+			Utils.readAutomationPropertiesFromEnvironmentVariables(key, value);
+		}
+		if(value == null) {
+			value = System.getProperty(key);
+			if(value !=null) {
+			Utils.readAutomationPropertiesFromEnvironmentVariables(key, value);
+			}
+		}
+		if(value == null)
+		{
+			value = Utils.readAutomationPropertiesFromFileUsingKey(key);
+		}
+		return value;
+	}	
+
+	public static String getBaseURL() throws ConfigurationException {
+		return baseURL = readAutomationProperty("baseURL");
 	}
 
-	public static String getBaseURL() {
-		return baseURL = Utils.getProperty("baseURL");
+	public static BrowserEnvironment getEnvironment() throws ConfigurationException {
+		return environment = BrowserEnvironment.valueOf(readAutomationProperty("environment"));
 	}
 
-	public static BrowserEnvironment getEnvironment() {
-		return environment = BrowserEnvironment.valueOf(Utils.getProperty("environment"));
+	public static String getPlatform() throws ConfigurationException {
+		return platform = readAutomationProperty("platform");
 	}
 
-	public static String getPlatform() {
-		return platform = Utils.getProperty("platform").trim();
+	public static BrowserType getBrowserType() throws ConfigurationException {
+		return browserType = BrowserType.valueOf(readAutomationProperty("browserType"));
 	}
 
-	public static BrowserType getBrowserType() {
-		return browserType = BrowserType.valueOf(Utils.getProperty("browserType"));
+	public static String getGridURL() throws ConfigurationException {
+		return gridURL = readAutomationProperty("gridURL");
 	}
 
-	public static String getGridURL() {
-		return gridURL = Utils.getProperty("gridURL");
+	public static String getUserName() throws ConfigurationException {
+		return userName = readAutomationProperty("username");
 	}
 
-	public static String getUserName() {
-		return userName = Utils.getProperty("username");
+	public static String getPassword() throws ConfigurationException {
+		return passWord = readAutomationProperty("password");
 	}
 
-	public static String getPassword() {
-		return passWord = Utils.getProperty("password");
+	public static boolean isDebug() throws ConfigurationException {
+		//readAutomationProperty();
+		return debug = Boolean.parseBoolean(readAutomationProperty("isDebug"));
 	}
 
-	public static boolean isDebug() {
-		readAutomationProperty();
-		return debug = Boolean.parseBoolean(Utils.getProperty("isDebug"));
+	public static String getRunCondition() throws ConfigurationException {
+		return runCondition = readAutomationProperty("runCondition");
 	}
 
-	public static String getRunCondition() {
-		return runCondition = Utils.getProperty("runCondition");
-	}
-
-	public static String getPriority() {
-		return priority = Utils.getProperty("priority");
+	public static String getPriority() throws ConfigurationException {
+		return priority = readAutomationProperty("priority");
 	}
 
 	public static String getTestDescription() throws ClassNotFoundException, NoSuchMethodException {
@@ -104,14 +118,14 @@ public class Config {
 		return description;
 	}
 
-	public static boolean verifyRunCondition() throws ClassNotFoundException, NoSuchMethodException {
+	public static boolean verifyRunCondition() throws ClassNotFoundException, NoSuchMethodException, ConfigurationException {
 		if ((getRunCondition().equalsIgnoreCase("All")) || (getRunCondition().equalsIgnoreCase(""))) {
 			return true;
 		}
 		return getRunCondition().equalsIgnoreCase(getTestRunCondition());
 	}
 
-	public static boolean verifyPriority() throws ClassNotFoundException, NoSuchMethodException {
+	public static boolean verifyPriority() throws ClassNotFoundException, NoSuchMethodException, ConfigurationException {
 		if ((getRunCondition().equalsIgnoreCase("All")) || (getRunCondition().equalsIgnoreCase("Sanity"))
 		    || ((getRunCondition().equalsIgnoreCase("Regression")) && (getPriority().equalsIgnoreCase("")))
 		    || (getRunCondition().equalsIgnoreCase("") && (getPriority().equalsIgnoreCase("")))) {
