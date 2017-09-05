@@ -33,6 +33,7 @@ public class Browser {
 			case Local:
 				returnedDriver = getBrowserType().createDriver();
 				returnedDriver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+				returnedDriver.manage().window().maximize();
 				break;
 			case Grid:
 				// returnedDriver = (RemoteWebDriver)

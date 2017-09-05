@@ -3,6 +3,7 @@ package com.steeleye.iris.automation.core;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 /**
@@ -44,7 +45,7 @@ public enum BrowserEnvironment {
 	public DesiredCapabilities getLocalHeadLessCapabilities() throws ConfigurationException {
 		DesiredCapabilities caps = DesiredCapabilities.chrome();
 		if (Config.getPlatform().toString().equals("Windows")) {
-			chromeDriverPath = "src\\main\\resources\\drivers\\chromedriverWin.exe";
+			chromeDriverPath = "src\\main\\resources\\drivers\\chromedriver.exe";
 		} else if (Config.getPlatform().toString().equals("Mac")) {
 			chromeDriverPath = "src/main/resources/drivers/chromedrivermac";
 		}
@@ -59,7 +60,7 @@ public enum BrowserEnvironment {
 	public DesiredCapabilities getLocalChromeCapabilities() throws ConfigurationException {
 		DesiredCapabilities caps = DesiredCapabilities.chrome();
 		if (Config.getPlatform().equals("Windows")) {
-			chromeDriverPath = "src\\main\\resources\\drivers\\chromedriverWin.exe";
+			chromeDriverPath = "src\\main\\resources\\drivers\\chromedriver.exe";
 		} else if (Config.getPlatform().equals("Mac")) {
 			chromeDriverPath = "src/main/resources/drivers/chromedrivermac";
 		}
@@ -73,18 +74,19 @@ public enum BrowserEnvironment {
 	public DesiredCapabilities getLocalIECapabilities() {
 		DesiredCapabilities caps = DesiredCapabilities.internetExplorer();
 		System.setProperty("webdriver.ie.driver", "src\\main\\resources\\drivers\\IEDriverServer.exe");
-		caps.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-		caps.setCapability(InternetExplorerDriver.BROWSER_ATTACH_TIMEOUT, 20000);
-		caps.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
+		//caps.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+		//caps.setCapability(InternetExplorerDriver.BROWSER_ATTACH_TIMEOUT, 20000);
+		//caps.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
+		caps.setCapability(CapabilityType.ACCEPT_SSL_CERTS,true);
 		caps.setCapability("pageLoadStrategy", "none");
-		caps.setCapability("enablePersistentHover", true);
+		//caps.setCapability("enablePersistentHover", true);
 		return caps;
 	}
 
 	public DesiredCapabilities getGridHeadLessCapabilities() throws ConfigurationException {
 		DesiredCapabilities caps = DesiredCapabilities.chrome();
 		if (Config.getPlatform().toString().equals("Windows")) {
-			chromeDriverPath = "src\\main\\resources\\drivers\\chromedriverWin.exe";
+			chromeDriverPath = "src\\main\\resources\\drivers\\chromedriver.exe";
 		} else if (Config.getPlatform().toString().equals("Mac")) {
 			chromeDriverPath = "src/main/resources/drivers/chromedrivermac";
 		}
@@ -99,7 +101,7 @@ public enum BrowserEnvironment {
 	public DesiredCapabilities getGridChromeCapabilities() throws ConfigurationException {
 		DesiredCapabilities caps = DesiredCapabilities.chrome();
 		if (Config.getPlatform().toString().equals("Windows")) {
-			chromeDriverPath = "src\\main\\resources\\drivers\\chromedriverWin.exe";
+			chromeDriverPath = "src\\main\\resources\\drivers\\chromedriver.exe";
 		} else if (Config.getPlatform().toString().equals("Mac")) {
 			chromeDriverPath = "src/main/resources/drivers/chromedrivermac";
 		}
@@ -113,11 +115,12 @@ public enum BrowserEnvironment {
 	public DesiredCapabilities getGridIECapabilities() {
 		DesiredCapabilities caps = DesiredCapabilities.internetExplorer();
 		System.setProperty("webdriver.ie.driver", "src\\main\\resources\\drivers\\IEDriverServer.exe");
-		caps.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-		caps.setCapability(InternetExplorerDriver.BROWSER_ATTACH_TIMEOUT, 20000);
-		caps.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
+		//caps.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+		//caps.setCapability(InternetExplorerDriver.BROWSER_ATTACH_TIMEOUT, 20000);
+		//caps.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
+		caps.setCapability(CapabilityType.ACCEPT_SSL_CERTS,true);
 		caps.setCapability("pageLoadStrategy", "none");
-		caps.setCapability("enablePersistentHover", true);
+		//caps.setCapability("enablePersistentHover", true);
 		return caps;
 	}
 

@@ -67,7 +67,7 @@ public class Config {
 	}
 
 	public static String getUserName() throws ConfigurationException {
-		return userName = readAutomationProperty("username");
+		return userName = readAutomationProperty("irisusername");
 	}
 
 	public static String getPassword() throws ConfigurationException {
