@@ -9,6 +9,12 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.stream.IntStream;
 
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.FileBasedConfiguration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -21,11 +27,13 @@ public class Utils {
 
 	public static Properties prop = new Properties();
 	public static InputStream input = null;
+	public static String filePath = "src/main/resources/automation.properties";
 
 	public static void takeScreenShot() {
 		try {
 			File Screenshot = ((TakesScreenshot) Browser.driver()).getScreenshotAs(OutputType.FILE);
-			FileUtils.copyFile(Screenshot, new File("\\surefire-report\\screenshots\\" + Config.getTestName() + ".jpg"));
+			FileUtils.copyFile(Screenshot,
+					new File("\\surefire-report\\screenshots\\" + Config.getTestName() + ".jpg"));
 		} catch (Throwable e) {
 			TestLogger.debug("Unable to get Screen shot.. Check Config", e);
 		}
@@ -33,7 +41,7 @@ public class Utils {
 
 	public static void readAutomationPropertiesFromFile() {
 		try {
-			input = new FileInputStream("src/main/resources/automation.properties");
+			input = new FileInputStream(filePath);
 		} catch (FileNotFoundException e) {
 			TestLogger.fatal("Properties file Not found", e);
 		}
@@ -42,6 +50,16 @@ public class Utils {
 		} catch (IOException e) {
 			TestLogger.fatal("Unable to load properties file", e);
 		}
+	}
+
+	public static void readAutomationPropertiesFromEnvironmentVariables(String key, String value)
+			throws ConfigurationException {
+		Parameters params = new Parameters();
+		FileBasedConfigurationBuilder<FileBasedConfiguration> builder = new FileBasedConfigurationBuilder<FileBasedConfiguration>(
+				PropertiesConfiguration.class).configure(params.properties().setFileName(Utils.filePath));
+		Configuration config = builder.getConfiguration();
+		config.setProperty(key, value);
+		builder.save();
 	}
 
 	public static String getProperty(String property) {
@@ -64,5 +82,19 @@ public class Utils {
 	public static IntStream randomize(int start, int end) {
 		Random rand = new Random();
 		return rand.ints(start, end);
+	}
+
+	public static String readAutomationPropertiesFromFileUsingKey(String key) {
+		try {
+			input = new FileInputStream(filePath);
+		} catch (FileNotFoundException e) {
+			TestLogger.fatal("Properties file Not found", e);
+		}
+		try {
+			prop.load(input);
+		} catch (IOException e) {
+			TestLogger.fatal("Unable to load properties file", e);
+		}
+		return prop.getProperty(key).trim();
 	}
 }

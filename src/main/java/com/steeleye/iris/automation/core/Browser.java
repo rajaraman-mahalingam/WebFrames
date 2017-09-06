@@ -3,6 +3,7 @@ package com.steeleye.iris.automation.core;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.openqa.selenium.*;
 
 /**
@@ -32,6 +33,7 @@ public class Browser {
 			case Local:
 				returnedDriver = getBrowserType().createDriver();
 				returnedDriver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+				returnedDriver.manage().window().maximize();
 				break;
 			case Grid:
 				// returnedDriver = (RemoteWebDriver)
@@ -57,11 +59,11 @@ public class Browser {
 		return driver;
 	}
 
-	public static BrowserEnvironment getEnvironment() {
+	public static BrowserEnvironment getEnvironment() throws ConfigurationException {
 		return Config.getEnvironment();
 	}
 
-	public static BrowserType getBrowserType() {
+	public static BrowserType getBrowserType() throws ConfigurationException {
 		return Config.getBrowserType();
 	}
 

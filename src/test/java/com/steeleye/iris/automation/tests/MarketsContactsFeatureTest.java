@@ -1,5 +1,6 @@
 package com.steeleye.iris.automation.tests;
 
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.junit.Test;
 
 import com.steeleye.iris.automation.core.BaseIrisTestCase;
@@ -13,7 +14,7 @@ public class MarketsContactsFeatureTest extends BaseIrisTestCase {
 	@Test
 	@RunConditions("All") @Priorities("low")
 	@TestDescription("IRIS:0013/MarketContacts/ Verify if the Contacts listed matches the count displayed in the top section")
-	public void Iris_0013() {
+	public void Iris_0013() throws ConfigurationException {
 		TestLogger.info("Given the user is in the Markets Contacts Page");
 		MarketsContactsPage.open();
 		
@@ -27,7 +28,7 @@ public class MarketsContactsFeatureTest extends BaseIrisTestCase {
 	@Test
 	@RunConditions("All") @Priorities("low")
 	@TestDescription("IRIS:0014/MarketContacts/ Verify if the contacts selected by checkbox matches the count displayed in the top section")
-	public void Iris_0014() {
+	public void Iris_0014() throws ConfigurationException {
 		TestLogger.info("Given the user is in the Markets Contacts Page");
 		MarketsContactsPage.open();
 		
@@ -42,7 +43,7 @@ public class MarketsContactsFeatureTest extends BaseIrisTestCase {
 	@RunConditions("All") @Priorities("low")
 	@TestDescription("IRIS:0015/MarketContacts/ Verify if selecting the all checkbox selects all of the contacts in that page"
 	    + " and count displayed in the top section equals the total contacts displayed in that page")
-	public void Iris_0015() {
+	public void Iris_0015() throws ConfigurationException {
 		TestLogger.info("Given the user is in the Markets Contacts Page");
 		MarketsContactsPage.open();
 		

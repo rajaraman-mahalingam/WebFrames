@@ -3,6 +3,7 @@ package com.steeleye.iris.automation.tests;
 import com.steeleye.iris.automation.core.*;
 import com.steeleye.iris.automation.pages.*;
 
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.junit.*;
 
 public class LoginFeatureTest extends BaseIrisTestCase {
@@ -12,7 +13,7 @@ public class LoginFeatureTest extends BaseIrisTestCase {
 	@Priorities("LOW")
 	@TestDescription("IRIS:0001/Login Functionality/ Verify Login Functionality - Incorrect username and Password")
 
-	public void Iris_0001() {
+	public void Iris_0001() throws ConfigurationException {
 		TestLogger.info("Given a user attempts to access the IRIS Login Page");
 		LoginPage.open();
 
@@ -33,7 +34,7 @@ public class LoginFeatureTest extends BaseIrisTestCase {
 	@Priorities("HIGH")
 	@TestDescription("IRIS:0002/Login Functionality/ Verify Login Functionality - Correct username and Password")
 
-	public void Iris_0002() {
+	public void Iris_0002() throws ConfigurationException {
 		TestLogger.info("Given a user attempts to access the IRIS Login Page");
 		LoginPage.open();
 

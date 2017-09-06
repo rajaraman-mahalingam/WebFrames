@@ -2,6 +2,7 @@ package com.steeleye.iris.automation.core;
 
 import java.sql.Timestamp;
 
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -21,7 +22,7 @@ public class TestLogger {
 
 	public Timeout globalTimeout = Timeout.seconds(5 * 60);
 
-	public static void init() {
+	public static void init() throws ConfigurationException {
 		if (Config.isDebug()) {
 			logger.setLevel(Level.DEBUG);
 		} else

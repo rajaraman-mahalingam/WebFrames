@@ -1,5 +1,6 @@
 package com.steeleye.iris.automation.core;
 
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assume;
@@ -55,20 +56,20 @@ public abstract class BaseTestCase {
 	};
 
 	@BeforeClass
-	public static void classInit() {
+	public static void classInit() throws ConfigurationException {
 
 		/**
-		 * Check if the site is up and Running using http methods if 200, then =>
-		 * Initialize the Test Logger && Open the B Instance if B Instance fails =>
-		 * Catch Exception, Fail the test and quit! else, then => Fail the test and
-		 * quit!
+		 * Check if the site is up and Running using http methods if 200, then
+		 * => Initialize the Test Logger && Open the B Instance if B Instance
+		 * fails => Catch Exception, Fail the test and quit! else, then => Fail
+		 * the test and quit!
 		 */
 		TestLogger.init();
 		TestLogger.info("Running " + Config.getRunCondition() + " tests on " + Config.getEnvironment());
 		try {
 			Browser.openBrowser();
 		} catch (Exception e) {
-			TestLogger.info("=>Setup Error!", e);
+			TestLogger.fatal("=>Setup Error!", e);
 			TestLogger.quit();
 		}
 	}
@@ -76,7 +77,8 @@ public abstract class BaseTestCase {
 	@AfterClass
 	public static void classQuit() {
 		/**
-		 * Close the Browser Instance and quit. Catch any Exception in the process.
+		 * Close the Browser Instance and quit. Catch any Exception in the
+		 * process.
 		 */
 		try {
 			Browser.closeBrowser();
@@ -87,12 +89,13 @@ public abstract class BaseTestCase {
 	}
 
 	@Before
-	public void testSetup() throws ClassNotFoundException, NoSuchMethodException {
+	public void testSetup() throws ClassNotFoundException, NoSuchMethodException, ConfigurationException {
 
 		/**
-		 * Check if the testRunCondition of this test is matching the global Test
-		 * Run condition set in the automation.properties file. If not matching,
-		 * then Skip the test! If Matching, then proceed with the test.
+		 * Check if the testRunCondition of this test is matching the global
+		 * Test Run condition set in the automation.properties file. If not
+		 * matching, then Skip the test! If Matching, then proceed with the
+		 * test.
 		 */
 		Config.setTestName(testName.getMethodName());
 		Config.setTestClass(this.getClass().getName());
@@ -105,8 +108,8 @@ public abstract class BaseTestCase {
 	@After
 	public void testTearDown() {
 		/**
-		 * Do not close the B instance, clear B session for this test. And continue
-		 * test!
+		 * Do not close the B instance, clear B session for this test. And
+		 * continue test!
 		 */
 		TestLogger.doTestEnd();
 	}

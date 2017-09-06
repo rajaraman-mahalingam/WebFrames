@@ -1,5 +1,7 @@
 package com.steeleye.iris.automation.pages.market;
 
+import org.apache.commons.configuration2.ex.ConfigurationException;
+
 import com.steeleye.iris.automation.components.CheckboxActions;
 import com.steeleye.iris.automation.components.PageActions;
 import com.steeleye.iris.automation.core.Config;
@@ -7,7 +9,7 @@ import com.steeleye.iris.automation.core.Page;
 
 public class MarketsContactsPage extends Page implements PageActions {
 	
-	public static String pageUrl = Config.getBaseURL() + "market/contacts";
+	public static String pageUrl =  "market/contacts";
 		
 		private static class Locators {
 		private static String countOfContacts ="xpath=//*[@id='app']/div/div/main/div/div/div/div[2]/div";
@@ -17,8 +19,8 @@ public class MarketsContactsPage extends Page implements PageActions {
 		private static String checkboxIdentifier = "/td[1]/div/label/span";
 		}
 		
-		public static void open() {
-			open(pageUrl);
+		public static void open() throws ConfigurationException {
+			open(Config.getBaseURL() +pageUrl);
 			waitForDOMToLoad(5);
 		}
 
